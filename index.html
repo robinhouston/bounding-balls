@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>A pathological case for Welzl’s algorithm</title>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<style>
+#input-circles circle { fill: #999; }
+#enclosing-circles circle { fill: none; stroke: red; }
+input { width: 80%; display: block; margin: auto;  }
+</style>
+</head>
+<body>
+<svg width="800" height="600">
+	<g id="input-circles"></g>
+	<g id="enclosing-circles"></g>
+</svg>
+<script>
+// const B1 = {name: "B1", x: 400, y: 200, r: 100},
+//       B2 = {name: "B2", x: 400, y: 420, r: 9},
+//       B3 = {name: "B3", x: 270, y: 200, r: 6},
+//       B4 = {name: "B4", x: 490, y: 140, r: 3},
+//       B5 = {name: "B5", x: 490, y: 260, r: 3};
+
+// const E = {name: "E", x: 400, y: 200, r: 100},
+//       C = {name: "C", x: 400, y: 400, r: 20},
+//       B = {name: "B", x: 270, y: 200, r: 6},
+//       A = {name: "A", x: 490, y: 140, r: 3},
+//       D = {name: "D", x: 490, y: 260, r: 3};
+
+// const ROOT_2 = Math.sqrt(2);
+// var theta = 0.0534844;
+
+// const B = {name: "B", x: 400, y: 200, r: 100},
+//       A = {name: "A", x: 400 * (1 - Math.sin(theta)), y: 400 * Math.cos(theta), r: 45.35187608152455496224325},
+//       C = {name: "C", x: 400 - 112/ROOT_2, y: 200 - 112/ROOT_2, r: 5},
+//       D = {name: "D", x: 400 + 105/ROOT_2, y: 200 - 105/ROOT_2, r: 5};
+
+const d = {name: "d", x: 400, y: 100, r: 20},
+      a = {name: "a", x: 370, y: 90, r: 5},
+      b = {name: "b", x: 430, y: 90, r: 5},
+      c = {name: "c", x: 400, y: 150, r: 10},
+      D = {name: "D", x: 450, y: 500, r: 10};
+
+function encloses(a, b) {
+  var dx = b.x - a.x,
+      dy = b.y - a.y,
+      dr = a.r - b.r;
+  return dr * dr + 1e-6 > dx * dx + dy * dy;
+}
+
+const draw_data = [a,b,c,D,d], //[ a,b,c,D,d ],
+      bound_data = [ [a,b,c,D], [D, d], [a,c,d] ]; //[ [a,b,c,D] ];
+
+function update() {
+	var draw_circles = d3.select("#input-circles").selectAll("circle").data(draw_data);
+	draw_circles.enter().append("circle")
+		.merge(draw_circles)
+		.attr("cx", d => d.x)
+		.attr("cy", d => d.y)
+		.attr("r", d => d.r)
+	draw_circles.exit().remove();
+
+	var bound_circles = d3.select("#enclosing-circles").selectAll("circle")
+		.data(bound_data.map(d3.packEnclose));
+	bound_circles.enter().append("circle")
+		.merge(bound_circles)
+		.attr("cx", d => d.x)
+		.attr("cy", d => d.y)
+		.attr("r", d => d.r)
+	bound_circles.exit().remove();
+
+	console.log(encloses(d3.packEnclose([a,b,c,D]), d));
+	console.log(encloses(d3.packEnclose([d,D]), a));
+	// console.log(encloses(d3.packEnclose([D,a]), d));
+}
+
+update();
+
+// d3.select("svg").on("click", () => console.log(d3.event));
+</script>
+</body>
+</html>
