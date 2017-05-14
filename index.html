@@ -36,11 +36,11 @@ input { width: 80%; display: block; margin: auto;  }
 //       C = {name: "C", x: 400 - 112/ROOT_2, y: 200 - 112/ROOT_2, r: 5},
 //       D = {name: "D", x: 400 + 105/ROOT_2, y: 200 - 105/ROOT_2, r: 5};
 
-const d = {name: "d", x: 400, y: 100, r: 20},
-      a = {name: "a", x: 370, y: 90, r: 5},
-      b = {name: "b", x: 430, y: 90, r: 5},
+const d = {name: "d", x: 400, y: 80, r: 30},
+      a = {name: "a", x: 365, y: 90, r: 5},
+      b = {name: "b", x: 435, y: 90, r: 5},
       c = {name: "c", x: 400, y: 150, r: 10},
-      D = {name: "D", x: 450, y: 500, r: 10};
+      D = {name: "D", x: 400, y: 500, r: 10};
 
 function encloses(a, b) {
   var dx = b.x - a.x,
@@ -50,7 +50,7 @@ function encloses(a, b) {
 }
 
 const draw_data = [a,b,c,D,d], //[ a,b,c,D,d ],
-      bound_data = [ [a,b,c,D], [D, d], [a,c,d] ]; //[ [a,b,c,D] ];
+      bound_data = [ [a,c,d], [a,b,c] ]; //[ [a,b,c,D] ];
 
 function update() {
 	var draw_circles = d3.select("#input-circles").selectAll("circle").data(draw_data);
@@ -70,8 +70,9 @@ function update() {
 		.attr("r", d => d.r)
 	bound_circles.exit().remove();
 
-	console.log(encloses(d3.packEnclose([a,b,c,D]), d));
-	console.log(encloses(d3.packEnclose([d,D]), a));
+	console.log(encloses(d3.packEnclose([a,b,c]), d));
+	console.log(encloses(d3.packEnclose([a,b,d]), c));
+	console.log(encloses(d3.packEnclose([a,c,d]), b));
 	// console.log(encloses(d3.packEnclose([D,a]), d));
 }
 
