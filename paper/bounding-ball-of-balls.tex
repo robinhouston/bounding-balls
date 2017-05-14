@@ -1,0 +1,35 @@
+\documentclass[a4paper]{article}
+\usepackage[round]{natbib}
+
+\bibliographystyle{plainnat}
+\frenchspacing
+
+\newcommand\R{\mathbb{R}}
+
+\author{Mike Bostock and Robin Houston}
+\title{Computing the smallest enclosing ball of balls}
+
+\begin{document}
+\maketitle
+
+\abstract{We consider the problem of computing the smallest ball enclosing a set
+of balls. There is an elegant randomised algorithm due to \citet{Welzl} that
+computes the smallest ball enclosing a set of \emph{points}: it was shown by
+\citet{Fischer-Gartner, FischerThesis} that a natural extension of Welzl's algorithm
+to sets of balls does not work in general. The aim of this note is to point out that
+a trivial modification to this algorithm makes it work correctly.}
+
+\section{Welzl's algorithm}
+
+\section{}
+
+\section{Proof of correctness}
+
+\section{Practical considerations}
+[Just like Welzl’s original algorithm. We can just shuffle the input balls once at the outset, rather than making a random choice at each step. This is more efficient and still runs in expected linear time. Also the move-to-front heuristic seems to make it faster in practice: explain why this is intuitively plausible, though not supported by rigorous arguments.]
+
+\section{Move-to-front}
+[Can we say anything about whether the move-to-front heuristic has the effect that recursive calls are always tight?]
+
+\bibliography{refs}
+\end{document}
