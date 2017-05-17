@@ -85,7 +85,6 @@ The only change to the actual algorithm is that a $\undef$ return value from a r
 \section{Proof of correctness}
 \begin{theorem}
   For any finite sets $S$, $T$ of $d$-balls, $\alg{WelzlB}(S,T)$ returns $\mb(S,T)$ if $\mb(S,T)=\mb(S\cup T)$, and $\undef$ otherwise.
-  \end{enumerate}
 \end{theorem}
 \begin{proof}
   We proceed by induction on $|S|$. For the base case: if $S=\emptyset$ then the claim is true by the correctness of $\alg{MbTangent}$. So assume we have chosen $B\in S$, and that the claim holds for $\alg{WelzlB}(S-\{B\},T)$ and $\alg{WelzlB}(S-\{B\},T\cup\{B\})$.
