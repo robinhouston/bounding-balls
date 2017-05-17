@@ -1,10 +1,20 @@
 \documentclass[a4paper]{article}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage[round]{natbib}
 
 \bibliographystyle{plainnat}
 \frenchspacing
 
+\newtheorem{theorem}{Theorem}[section]
+
 \newcommand\R{\mathbb{R}}
+\newcommand\alg[1]{\mbox{\textsc{#1}}}
+\newcommand\undef{\mathbf{null}}
+\newcommand\mb{\mathrm{mb}}
 
 \author{Mike Bostock and Robin Houston}
 \title{Computing the smallest enclosing ball of balls}
@@ -12,24 +22,93 @@
 \begin{document}
 \maketitle
 
-\abstract{We consider the problem of computing the smallest ball enclosing a set
-of balls. There is an elegant randomised algorithm due to \citet{Welzl} that
-computes the smallest ball enclosing a set of \emph{points}: it was shown by
-\citet{Fischer-Gartner, FischerThesis} that a natural extension of Welzl's algorithm
-to sets of balls does not work in general. The aim of this note is to point out that
-a trivial modification to this algorithm makes it work correctly.}
+\abstract{We consider the problem of computing the smallest ball enclosing a set of balls. There is an elegant randomised algorithm due to \citet{Welzl} that computes the smallest ball enclosing a set of points: it was shown by \citet{Fischer-Gartner, FischerThesis} that a natural extension of Welzl's algorithm to sets of balls does not work in general. We observe that a trivial modification to this algorithm makes it work correctly.}
 
 \section{Welzl's algorithm}
 
-\section{}
+Welzl's algorithm computes the smallest ball that contains all the points in a finite set $S\subseteq\R^d$. We shall denote this smallest ball as $\mb(S)$.
+
+It uses an algorithm $\alg{BallBoundedBy}(T)$ that takes a finite set of points in $\R^d$ and computes the smallest $d$-ball whose boundary contains all the points in $T$. This amounts to solving a system of $|T|$ quadratic equations. [Explain how this reduces to one quadratic equation and $|T|-1$ linear equations, etc.] There may be no such ball, in which case the algorithm returns $\undef$.
+
+Using $\alg{BallBoundedBy}$ as a subroutine, the following recursive algorithm due to \citet{Welzl} computes the smallest ball containing a finite set of points, with some of them constrained to be on the ball's boundary. Again there may be no such ball, in which case the algorithm will return $\undef$.
+
+Now we may compute $\mb(S)$ simply by calling $\alg{WelzlP}(S, \emptyset)$.
+
+\begin{algorithm}\label{alg:welzl-points}
+  \caption{Welzl's algorithm for the bounding ball of points}
+  \begin{algorithmic}[0]
+    \State{\{ Compute the smallest ball containing all the points in $S\cup T$ that has all the points in $T$ on its boundary. \}}
+    \Function{WelzlP}{$S, T$}
+      \If{$S=\emptyset$}
+        \State{\Return{$\alg{BallBoundedBy}(T)$}}
+      \EndIf
+      \State{Choose $p\in S$ uniformly at random}
+      \State{$D\gets \alg{WelzlP}(S-\{p\}, T)$}
+      \If{$D=\undef$ or $p\in D$}
+        \State{\Return{$D$}}
+      \Else
+        \State{\Return{$\alg{WelzlP}(S-\{p\}, T\cup\{p\})$}}
+      \EndIf
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\section{Enclosing ball of balls}
+Let's write $\mb(S)$ to mean the smallest ball containing all the balls in $S$, where $S$ is a finite set of balls in $\R^d$. [Show this exists and is unique. Introduce convex combinations of balls here, or in the previous section?] Let's also write $\mb(S, T)$ to mean the smallest ball containing all the balls in $S\cup T$ that has all the balls in $T$ tangent to its boundary. In general $\mb(S,T)$ may not exist, and if it does exist it may not be unique. [Give examples.]
+
+In this section we exhibit a variant of Welzl's algorithm that is designed to be easy to analyse. Below we'll show how it can be made simpler and more efficient to implement, at the expense of being harder to analyse.
+
+There is an algorithm $\alg{MbTangent}(T)$ that computes $\mb(T)$ provided that all the balls in $T$ are tangent to $\mb(T)$, and returns $\undef$ otherwise. This can be implemented in various ways. One possibility is first to compute the smallest ball to which all the balls in $T$ are internally tangent, if there is one. This is similar to the algorithm $\alg{BallBoundedBy}$ described above. [Explain further.] If there is no such ball, return $\undef$. If there is, check whether it is equal to $\mb(T)$ by checking whether its centre is contained in the convex hull of the centres of the balls in $T$. (\citealp[Lemma~2.2]{Fischer-Gartner}, \citealp[Lemma~3.3]{Fischer})
+
+Here is our version of Welzl's algorithm adapted to computing the bounding ball of balls.
+\begin{algorithm}\label{alg:welzl-balls}
+  \caption{Compute the bounding ball of balls}
+  \begin{algorithmic}[0]
+    \State{\{ Compute $\mb(S\cup T)$ if $\mb(S\cup T)=\mb(S, T)$ \}}
+    \Function{WelzlB}{$S, T$}
+      \If{$S=\emptyset$}
+        \State{\Return{$\alg{MbTangent}(T)$}}
+      \EndIf
+      \State{Choose $B\in S$ uniformly at random}
+      \State{$D\gets \alg{WelzlB}(S-\{B\}, T)$}
+      \If{$D=\undef$ or $B\not\subseteq D$}
+        \State{\Return{$\alg{WelzlB}(S-\{B\}, T\cup\{B\})$}}
+      \Else
+        \State{\Return{$D$}}
+      \EndIf
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+The only change to the actual algorithm is that a $\undef$ return value from a recursive call is handled in the opposite way: we treat $\undef$ as a ball that contains nothing, rather than as a ball that contains everything. More important is the way we have weakened the description of the algorithm: it only computes $\mb(S, T)$ when it is equal to $\mb(S\cup T)$. Of course this makes no difference in the case we principally care about, where the algorithm is initially called with $T=\emptyset$.
 
 \section{Proof of correctness}
+\begin{theorem}
+  For any finite sets $S$, $T$ of $d$-balls, $\alg{WelzlB}(S,T)$ returns $\mb(S,T)$ if $\mb(S,T)=\mb(S\cup T)$, and $\undef$ otherwise.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  We proceed by induction on $|S|$. For the base case: if $S=\emptyset$ then the claim is true by the correctness of $\alg{MbTangent}$. So assume we have chosen $B\in S$, and that the claim holds for $\alg{WelzlB}(S-\{B\},T)$ and $\alg{WelzlB}(S-\{B\},T\cup\{B\})$.
+
+  Let $M$ equal $\mb((S-\{B\})\cup T)$. Suppose first that $B\subseteq M$. In this case $M=\mb(S\cup T)$. We know $\alg{WelzlB}(S-\{B\},T)$ returns $M$ if all the balls in $T$ are tangent to $M$ and $\undef$ otherwise, so in either case it is correct to return $\alg{WelzlB}(S-\{B\},T)$.
+
+  Next suppose that $B\not\subseteq M$. Let $N$ equal $\mb(S\cup T)$. We know $B$ is tangent to $N$. [This should probably be an explicit lemma. It follows from the standard argument using convex combinations of balls.] If all the balls in $T$ are also tangent to $N$ then $\alg{WelzlB}(S-\{B\}, T\cup\{B\})$ returns $N$, correctly. If not then it returns $\undef$, also correctly.
+\end{proof}
+
+\section{Simplifying the base case}
+[TODO. Weaken the requirements on $\alg{MbTangent}(T)$, so it's allowed -- but not required -- to return a minimal ball to which all the balls in $T$ are internally tangent even when that is not equal to $\mb(T)$. Requires more sophisticated analysis of the geometry. This is the next part I want to sketch out.]
+
+[TODO. NEEDS  MORE THOUGHT. If we make some assumptions about the ordering -- which should be satisfied both when keeping a fixed order and when using move-to-front -- I suspect we can argue that the balls passed to $\alg{MbTangent}$ have affinely independent centres, so one can get away with not handling that case. I certainly hope so, since the D3 implementation of \texttt{enclose3} doesn’t work when the centres of the three disks are in a line!]
 
 \section{Practical considerations}
-[Just like Welzl’s original algorithm. We can just shuffle the input balls once at the outset, rather than making a random choice at each step. This is more efficient and still runs in expected linear time. Also the move-to-front heuristic seems to make it faster in practice: explain why this is intuitively plausible, though not supported by rigorous arguments.]
+[Maybe we should remove this section, since we'll probably have to discuss this stuff above anyway.]
+[Just like Welzl’s original algorithm. We can just shuffle the input balls once at the outset, rather than making a random choice at each step. This is more efficient and still runs in expected linear time. Also the move-to-front heuristic seems to make it faster in practice: explain why this is intuitively plausible, though not supported by rigorous theory. (Also do a more thorough literature search to see if anyone has done any theoretical analysis of the move-to-front heuristic.)]
+
+\section{Experimental results}
+[Compare our algorithm to the MSW algorithm, and report how much faster it is.]
 
 \section{Move-to-front}
-[Can we say anything about whether the move-to-front heuristic has the effect that recursive calls are always tight?]
+[Can we say anything about whether the move-to-front heuristic has the effect that $\alg{MbTangent}(T)$ is only ever called when all the disks in $T$ are tangent to $\mb(T)$? This sounds vaguely plausible, and seems to be true in the small number of two-dimensional examples I've tried.]
 
 \bibliography{refs}
 \end{document}
