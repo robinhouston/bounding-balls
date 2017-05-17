@@ -32,12 +32,10 @@ It uses an algorithm $\alg{BallBoundedBy}(T)$ that takes a finite set of points 
 
 Using $\alg{BallBoundedBy}$ as a subroutine, the following recursive algorithm due to \citet{Welzl} computes the smallest ball containing a finite set of points, with some of them constrained to be on the ball's boundary. Again there may be no such ball, in which case the algorithm will return $\undef$.
 
-Now we may compute $\mb(S)$ simply by calling $\alg{WelzlP}(S, \emptyset)$.
-
-\begin{algorithm}\label{alg:welzl-points}
-  \caption{Welzl's algorithm for the bounding ball of points}
+%\begin{algorithm}\label{alg:welzl-points}
+%  \caption{Welzl's algorithm for the bounding ball of points}
   \begin{algorithmic}[0]
-    \State{\{ Compute the smallest ball containing all the points in $S\cup T$ that has all the points in $T$ on its boundary. \}}
+    %\State{\{ Compute the smallest ball containing all the points in $S\cup T$ that has all the points in $T$ on its boundary. \}}
     \Function{WelzlP}{$S, T$}
       \If{$S=\emptyset$}
         \State{\Return{$\alg{BallBoundedBy}(T)$}}
@@ -51,7 +49,9 @@ Now we may compute $\mb(S)$ simply by calling $\alg{WelzlP}(S, \emptyset)$.
       \EndIf
     \EndFunction
   \end{algorithmic}
-\end{algorithm}
+%\end{algorithm}
+
+\noindent Now we may compute $\mb(S)$ simply by calling $\alg{WelzlP}(S, \emptyset)$.
 
 \section{Enclosing ball of balls}
 Let's write $\mb(S)$ to mean the smallest ball containing all the balls in $S$, where $S$ is a finite set of balls in $\R^d$. [Show this exists and is unique. Introduce convex combinations of balls here, or in the previous section?] Let's also write $\mb(S, T)$ to mean the smallest ball containing all the balls in $S\cup T$ that has all the balls in $T$ tangent to its boundary. In general $\mb(S,T)$ may not exist, and if it does exist it may not be unique. [Give examples.]
@@ -61,8 +61,8 @@ In this section we exhibit a variant of Welzl's algorithm that is designed to be
 There is an algorithm $\alg{MbTangent}(T)$ that computes $\mb(T)$ provided that all the balls in $T$ are tangent to $\mb(T)$, and returns $\undef$ otherwise. This can be implemented in various ways. One possibility is first to compute the smallest ball to which all the balls in $T$ are internally tangent, if there is one. This is similar to the algorithm $\alg{BallBoundedBy}$ described above. [Explain further.] If there is no such ball, return $\undef$. If there is, check whether it is equal to $\mb(T)$ by checking whether its centre is contained in the convex hull of the centres of the balls in $T$. (\citealp[Lemma~2.2]{Fischer-Gartner}, \citealp[Lemma~3.3]{Fischer})
 
 Here is our version of Welzl's algorithm adapted to computing the bounding ball of balls.
-\begin{algorithm}\label{alg:welzl-balls}
-  \caption{Compute the bounding ball of balls}
+%\begin{algorithm}\label{alg:welzl-balls}
+%  \caption{Compute the bounding ball of balls}
   \begin{algorithmic}[0]
     \State{\{ Compute $\mb(S\cup T)$ if $\mb(S\cup T)=\mb(S, T)$ \}}
     \Function{WelzlB}{$S, T$}
@@ -78,9 +78,9 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
       \EndIf
     \EndFunction
   \end{algorithmic}
-\end{algorithm}
+%\end{algorithm}
 
-The only change to the actual algorithm is that a $\undef$ return value from a recursive call is handled in the opposite way: we treat $\undef$ as a ball that contains nothing, rather than as a ball that contains everything. More important is the way we have weakened the description of the algorithm: it only computes $\mb(S, T)$ when it is equal to $\mb(S\cup T)$. Of course this makes no difference in the case we principally care about, where the algorithm is initially called with $T=\emptyset$.
+\noindent The only change to the actual algorithm is that a $\undef$ return value from a recursive call is handled in the opposite way: we treat $\undef$ as a ball that contains nothing, rather than as a ball that contains everything. More important is the way we have weakened the description of the algorithm: it only computes $\mb(S, T)$ when it is equal to $\mb(S\cup T)$. Of course this makes no difference in the case we principally care about, where the algorithm is initially called with $T=\emptyset$.
 
 \section{Proof of correctness}
 \begin{theorem}
