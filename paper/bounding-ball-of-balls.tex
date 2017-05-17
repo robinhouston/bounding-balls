@@ -70,11 +70,11 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
         \State{\Return{$\alg{MbTangent}(T)$}}
       \EndIf
       \State{Choose $B\in S$ uniformly at random}
-      \State{$D\gets \alg{WelzlB}(S-\{B\}, T)$}
-      \If{$D=\undef$ or $B\not\subseteq D$}
+      \State{$M\gets \alg{WelzlB}(S-\{B\}, T)$}
+      \If{$M=\undef$ or $B\not\subseteq M$}
         \State{\Return{$\alg{WelzlB}(S-\{B\}, T\cup\{B\})$}}
       \Else
-        \State{\Return{$D$}}
+        \State{\Return{$M$}}
       \EndIf
     \EndFunction
   \end{algorithmic}
