@@ -92,7 +92,7 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
   \begin{enumerate}
     \item\label{item:cc:0} $B_0=B$,
     \item\label{item:cc:1} $B_1=C$,
-    \item\label{item:cc:intersection} $B_\lambda\subseteq B\cap C$ for all $\lambda\in[0,1]$,
+    \item\label{item:cc:intersection} $B\cap C\subseteq B_\lambda$ for all $\lambda\in[0,1]$,
     % This is true, but we don’t (yet) need it:
     %\item\label{item:cc:boundary} $\boundary B_\lambda\subseteq \boundary B\cup \boundary C$ for all $\lambda\in[0,1]$, where $\boundary$ denotes the boundary sphere of a ball,
     \item\label{item:cc:radius} if $B\neq C$ then $\radius B_\lambda < \max(\radius B, \radius C)$ for all $\lambda\in(0,1)$, where $\radius$ denotes the radius of a ball.
