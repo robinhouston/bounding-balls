@@ -13,7 +13,7 @@ function encloses(a, b) {
 }
 
 function pp_circle(a) {
-  return a.name || "(" + a.x + ", " + a.y + ", " + a.r + ")";
+  return a.name || JSON.stringify(a);
 }
 
 function pp_array(B) {
@@ -89,6 +89,7 @@ function extendBasis(B, p) {
   }
 
   // If we get here then something is very wrong
+  console.error(pp_array(B), pp_circle(p));
   throw new Error("extendBasis: we should never get here");
 }
 
@@ -148,7 +149,7 @@ function enclose3(a, b, c) {
       A = xb * xb + yb * yb - 1,
       B = 2 * (xa * xb + ya * yb + r1),
       C = xa * xa + ya * ya - r1 * r1,
-      r = (-B - Math.sqrt(B * B - 4 * A * C)) / (2 * A);
+      r = A ? (-B - Math.sqrt(B * B - 4 * A * C)) / (2 * A) : -C / B;
   return {
     x: xa + xb * r + x1,
     y: ya + yb * r + y1,
