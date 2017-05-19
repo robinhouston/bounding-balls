@@ -128,7 +128,7 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
   \begin{equation}\label{ineq:r}
     r^2 \leq \frac{r_B^2r_C^2}{(1-\lambda) r_C^2 + \lambda r_B^2}
   \end{equation}
-  The denominator is between $r_B^2$ and $r_C^2$, hence the value of the whole fraction is between $r_B^2$ and $r_C^2$. So we can prove \ref{item:cc:radius}: if $B\neq C$ then either their centres or their radii are different. If their centres are different then $d^2>0$ and the inequality~(\ref{ineq:r}) is strict assuming $\lambda\in(0,1)$; if their radii are different then for $\lambda\in(0,1)$ the value of the expression on the rhs of~(\ref{ineq:r}) is strictly less than $\max(r_B,r_C)$.
+  The denominator is between $r_B^2$ and $r_C^2$, hence the value of the whole fraction is between $r_B^2$ and $r_C^2$. So we can prove \ref{item:cc:radius}: if $B\neq C$ then either the centres or the radii of $B$ and $C$ are different. If their centres are different then $d^2>0$ and the inequality~(\ref{ineq:r}) is strict assuming $\lambda\in(0,1)$; if their radii are different then for $\lambda\in(0,1)$ the value of the expression on the rhs of~(\ref{ineq:r}) is strictly less than $\max(r_B,r_C)$.
 
   Furthermore \ref{item:cc:0} and \ref{item:cc:1} are immediate by the definition of $f_\lambda$. For \ref{item:cc:intersection} observe that $f_\lambda(\p)$ lies between $f_B(\p)$ and $f_C(\p)$, so if they are both $\leq1$ then so must $f_\lambda(\p)$ be.
 \end{proof}
