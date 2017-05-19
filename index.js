@@ -1,4 +1,4 @@
-import enclose from "./enclose-no-mtf";
+import enclose from "./enclose-msw";
 
 const B1 = {name: "B1", x: 400, y: 200, r: 100},
       B2 = {name: "B2", x: 400, y: 420, r: 9},
