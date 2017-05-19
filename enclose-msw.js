@@ -12,8 +12,7 @@ function encloses(a, b) {
 }
 
 function pp_circle(a) {
-  return a.name;
-  return "(" + a.x + ", " + a.y + ", " + a.r + ")";
+  return a.name || "(" + a.x + ", " + a.y + ", " + a.r + ")";
 }
 
 function pp_array(B) {
