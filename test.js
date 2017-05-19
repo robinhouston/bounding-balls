@@ -29,11 +29,13 @@ function circlesEqual(a, b) {
 
 while(true) {
 	let circles = randomCircles();
+	let previous_result;
 	allPermutationsOf(circles, circles => {
 		const result = encloseMSW(circles);
 		if (typeof previous_result !== "undefined") {
 			if (!circlesEqual(previous_result, result)) {
 				console.warn("Inconsistent results!", previous_result, result);
+				console.warn("D3 thinks the answer is", encloseD3(circles));
 			}
 		}
 		previous_result = result;
