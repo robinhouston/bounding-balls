@@ -73,6 +73,8 @@ function encloseBasis(B) {
 function extendBasis(B, p) {
   var i, j;
   if (enclosesAll(p, B)) return [p];
+
+  // If we get here then B must have at least one element
   for (i = 0; i < B.length; i++) {
     if (enclosesAll(encloseBasis([B[i], p]), B)) return [B[i], p];
   }
@@ -86,6 +88,7 @@ function extendBasis(B, p) {
     }
   }
 
+  // If we get here then something is very wrong
   throw new Error("extendBasis: we should never get here");
 }
 
