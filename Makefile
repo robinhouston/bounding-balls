@@ -6,8 +6,8 @@ test: test-script.js
 
 .PHONY: run test
 
-script.js: index.js enclose.js enclose-no-mtf.js enclose-msw.js shuffle.js
+script.js: index.js enclose.js enclose-no-mtf.js enclose-msw.js shuffle.js permutations.js libenclose.js
 	rollup -o "$@" -f iife "$<"
 
-test-script.js: test.js enclose.js enclose-no-mtf.js enclose-msw.js shuffle.js
+test-script.js: test.js enclose.js enclose-no-mtf.js enclose-msw.js shuffle.js permutations.js libenclose.js
 	rollup -o "$@" -f iife "$<"
