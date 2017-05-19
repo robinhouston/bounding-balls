@@ -30,7 +30,7 @@ function pp_list(L) {
 
 // Returns the smallest circle that contains circles L and intersects circles B.
 function encloseN(L, B, level=0) {
-  console.log("  ".repeat(level) + "encloseN", pp_list(L), "[" + pp_array(B) + "]");
+  //console.log("  ".repeat(level) + "encloseN", pp_list(L), "[" + pp_array(B) + "]");
   var circle,
       l0 = null,
       l1 = L.head,
@@ -67,7 +67,7 @@ function encloseN(L, B, level=0) {
   }
 
   L.tail = l0;
-  console.log("  ".repeat(level) + "returning", JSON.stringify(circle) || "undefined");
+  //console.log("  ".repeat(level) + "returning", JSON.stringify(circle) || "undefined");
   return circle;
 }
 
