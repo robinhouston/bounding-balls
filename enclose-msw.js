@@ -1,4 +1,4 @@
-import { enclose1, enclose2, enclose3, encloses } from "./libenclose";
+import { enclose1, enclose2, enclose3, encloses, pp_array, pp_circle } from "./libenclose";
 import shuffle from "./shuffle";
 
 export default function(circles) {

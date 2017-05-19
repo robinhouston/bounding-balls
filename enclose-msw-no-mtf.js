@@ -1,4 +1,4 @@
-import { enclose1, enclose2, enclose3, encloses } from "./libenclose";
+import { enclose1, enclose2, enclose3, encloses, pp_array, pp_circle } from "./libenclose";
 import shuffle from "./shuffle";
 
 export default function(circles) {
@@ -63,6 +63,7 @@ function extendBasis(B, p) {
   }
 
   // If we get here then something is very wrong
+  console.error(pp_array(B), pp_circle(p));
   throw new Error("extendBasis: we should never get here");
 }
 

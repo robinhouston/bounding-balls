@@ -59,8 +59,7 @@ export function encloses(a, b) {
 
 
 export function pp_circle(a) {
-  return a.name;
-  return "(" + a.x + ", " + a.y + ", " + a.r + ")";
+  return a.name || JSON.stringify(a);
 }
 
 export function pp_array(B) {
