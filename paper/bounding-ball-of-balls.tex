@@ -109,7 +109,7 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
   \[ \frac{1-\lambda}{r_B^2}[(x-x_B)^2 + (y-y_B)^2] + \frac{\lambda}{r_C^2}[(x-x_C)^2 + (y-y_C)^2] \]
   %
   Multiplying out and completing the square in $x$ and $y$ gives:
-  \[ \Bigl(\frac{1-\lambda}{r_B^2} + \frac{\lambda}{r_C^2}\Bigr)\bigl((x-\alpha)^2 + (y-\beta)^2\bigr) + \gamma \]
+  \[ \bigl(\frac{1-\lambda}{r_B^2} + \frac{\lambda}{r_C^2}\bigr)\bigl((x-\alpha)^2 + (y-\beta)^2\bigr) + \gamma \]
   where $\alpha$, $\beta$, $\gamma$ are expressions in $\lambda$, $x_B$,$y_B$,$r_B$, $x_C$,$y_C$,$r_C$.\footnote{
     $\alpha = \frac{(1-\lambda) r_C^2 x_B + \lambda r_B^2 x_C}{(1-\lambda) r_C^2 + \lambda r_B^2}$,
     $\beta = \frac{(1-\lambda) r_C^2 y_B + \lambda r_B^2 y_C}{(1-\lambda) r_C^2 + \lambda r_B^2}$,
@@ -120,15 +120,15 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
   %
   Substituting the expression for $\gamma$ and simplifying, the squared radius is
   \[
-    \frac{r_B^2r_C^2}{((1-\lambda) r_C^2 + \lambda r_B^2)^2}\Bigl( \lambda r_B^2 + (1-\lambda)(r_C^2-\lambda d^2 \Bigr)
+    \frac{r_B^2r_C^2}{((1-\lambda) r_C^2 + \lambda r_B^2)^2}\bigl( (1-\lambda)(r_C^2-\lambda d^2) + \lambda r_B^2 \bigr)
   \]
-  where $d^2=(x_B-x_C)^2+(y_B-y_C)^2$ is the square of the distance from the centre of $B$ to the centre of $C$.
+  where $d^2:=(x_B-x_C)^2+(y_B-y_C)^2$ is the square of the distance from the centre of $B$ to the centre of $C$.
 
   Since $d^2$ is non-negative,
   \begin{equation}\label{ineq:r}
     r^2 \leq \frac{r_B^2r_C^2}{(1-\lambda) r_C^2 + \lambda r_B^2}
   \end{equation}
-  The denominator is between $r_B^2$ and $r_C^2$, hence the value of the whole fraction is between $r_B^2$ and $r_C^2$. So we can prove \ref{item:cc:radius}: if $B\neq C$ then either the centres or the radii of $B$ and $C$ are different. If their centres are different then $d^2>0$ and the inequality~(\ref{ineq:r}) is strict assuming $\lambda\in(0,1)$; if their radii are different then for $\lambda\in(0,1)$ the value of the expression on the rhs of~(\ref{ineq:r}) is strictly less than $\max(r_B,r_C)$.
+  The denominator is between $r_B^2$ and $r_C^2$, hence the value of the whole fraction is between $r_B^2$ and $r_C^2$. So we can prove \ref{item:cc:radius}: if $B\neq C$ then either the centres or the radii of $B$ and $C$ are different. If their centres are different then $d^2>0$, so if $\lambda\notin\{0,1\}$ the inequality~(\ref{ineq:r}) is strict; if their radii are different then for $\lambda\notin\{0,1\}$ the value of the expression on the rhs of~(\ref{ineq:r}) is strictly less than $\max(r_B,r_C)$.
 
   Furthermore \ref{item:cc:0} and \ref{item:cc:1} are immediate by the definition of $f_\lambda$. For \ref{item:cc:intersection} observe that $f_\lambda(\p)$ lies between $f_B(\p)$ and $f_C(\p)$, so if they are both $\leq1$ then so must $f_\lambda(\p)$ be.
 \end{proof}
@@ -149,7 +149,7 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
 
   Let $M$ equal $\mb((S-\{B\})\cup T)$. Suppose first that $B\subseteq M$. In this case $M=\mb(S\cup T)$. We know $\alg{WelzlB}(S-\{B\},T)$ returns $M$ if all the balls in $T$ are tangent to $M$ and $\undef$ otherwise, so in either case it is correct to return $\alg{WelzlB}(S-\{B\},T)$.
 
-  Next suppose that $B\not\subseteq M$. Let $N$ equal $\mb(S\cup T)$. We know by Lemma~\ref{lemma:tangent} $B$ is tangent to $N$. If all the balls in $T$ are also tangent to $N$ then $\alg{WelzlB}(S-\{B\}, T\cup\{B\})$ returns $N$, correctly. If not then it returns $\undef$, also correctly.
+  Next suppose that $B\not\subseteq M$. Let $N$ equal $\mb(S\cup T)$. We know by Lemma~\ref{lemma:tangent} that $B$ is tangent to $N$. If all the balls in $T$ are also tangent to $N$ then $\alg{WelzlB}(S-\{B\}, T\cup\{B\})$ returns $N$, correctly. If not then it returns $\undef$, also correctly.
 \end{proof}
 
 \section{Simplifying the base case}
