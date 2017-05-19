@@ -67,7 +67,7 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
 %\begin{algorithm}\label{alg:welzl-balls}
 %  \caption{Compute the bounding ball of balls}
   \begin{algorithmic}[0]
-    \State{\{ Compute $\mb(S\cup T)$ if $\mb(S\cup T)=\mb(S, T)$ \}}
+    \State{\{ Compute $\mb(S, T)$ if $\mb(S, T)=\mb(S\cup T)$ \}}
     \Function{WelzlB}{$S, T$}
       \If{$S=\emptyset$}
         \State{\Return{$\alg{MbTangent}(T)$}}
