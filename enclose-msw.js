@@ -77,13 +77,13 @@ function extendBasis(B, p) {
 
   // If we get here then B must have at least one element
   for (i = 0; i < B.length; i++) {
-    if (enclosesAll(encloseBasis([B[i], p]), B)) return [B[i], p];
+    if (enclosesAll(enclose2(B[i], p), B)) return [B[i], p];
   }
 
   // If we get here then B must have at least two elements
   for (i = 0; i < B.length-1; i++) {
     for (j = i+1; j < B.length; j++) {
-      if (enclosesAll(encloseBasis([B[i], B[j], p]), B)) {
+      if (isBasis(B[i], B[j], p) && enclosesAll(enclose3(B[i], B[j], p), B)) {
         return [B[i], B[j], p];
       }
     }
@@ -91,6 +91,12 @@ function extendBasis(B, p) {
 
   // If we get here then something is very wrong
   throw new Error("extendBasis: we should never get here");
+}
+
+function isBasis(a, b, c) {
+  return !encloses(enclose2(a, b), c)
+    && !encloses(enclose2(a, c), b)
+    && !encloses(enclose2(b, c), a);
 }
 
 function enclosesAll(a, B) {
