@@ -92,7 +92,7 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
   \begin{enumerate}
     \item\label{item:cc:0} $B_0=B$,
     \item\label{item:cc:1} $B_1=C$,
-    \item\label{item:cc:intersection} $B_\lambda\subseteq B\cup C$ for all $\lambda\in[0,1]$,
+    \item\label{item:cc:intersection} $B_\lambda\subseteq B\cap C$ for all $\lambda\in[0,1]$,
     % This is true, but we don’t (yet) need it:
     %\item\label{item:cc:boundary} $\boundary B_\lambda\subseteq \boundary B\cup \boundary C$ for all $\lambda\in[0,1]$, where $\boundary$ denotes the boundary sphere of a ball,
     \item\label{item:cc:radius} if $B\neq C$ then $\radius B_\lambda < \max(\radius B, \radius C)$ for all $\lambda\in(0,1)$, where $\radius$ denotes the radius of a ball.
@@ -128,9 +128,9 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
   \begin{equation}\label{ineq:r}
     r^2 \leq \frac{r_B^2r_C^2}{(1-\lambda) r_C^2 + \lambda r_B^2}
   \end{equation}
-  The denominator is between $r_B^2$ and $r_C^2$, hence $r^2$ is between $r_B^2$ and $r_C^2$, which implies $r$ is between $r_B$ and $r_C$. So we can prove \label{item:cc:radius}: if $B\neq C$ then either their centres or their radii are different. If their centres are different then $d^2>0$ and the inequality \label{ineq:1} is strict assuming $\lambda\in(0,1)$; if their radii are different then for $\lambda\in(0,1)$ the value of the expression on the rhs of \ref{ineq:r} is strictly less than $\max{r_B,r_C}$.
+  The denominator is between $r_B^2$ and $r_C^2$, hence the value of the whole fraction is between $r_B^2$ and $r_C^2$. So we can prove \ref{item:cc:radius}: if $B\neq C$ then either their centres or their radii are different. If their centres are different then $d^2>0$ and the inequality~(\ref{ineq:r}) is strict assuming $\lambda\in(0,1)$; if their radii are different then for $\lambda\in(0,1)$ the value of the expression on the rhs of~(\ref{ineq:r}) is strictly less than $\max(r_B,r_C)$.
 
-  Furthermore \ref{item:cc:0} and \ref{item:cc:1} are immediate by definition. For \ref{item:cc:intersection} observe that $f_\lambda(\p)$ lies between $f_B(\p)$ and $f_C(\p)$, so if they are both $\leq1$ then so must $f_\lambda(\p)$ be.
+  Furthermore \ref{item:cc:0} and \ref{item:cc:1} are immediate by the definition of $f_\lambda$. For \ref{item:cc:intersection} observe that $f_\lambda(\p)$ lies between $f_B(\p)$ and $f_C(\p)$, so if they are both $\leq1$ then so must $f_\lambda(\p)$ be.
 \end{proof}
 \begin{lemma}\label{lemma:tangent}
   Let $S$ be a finite set of balls and $B$ a ball. If $B\not\subseteq\mb(S)$ then $B$ is tangent to $\mb(S\cup\{B\})$.
