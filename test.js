@@ -1,7 +1,9 @@
-import enclose from "./enclose-msw";
+import encloseMSW from "./enclose-msw";
+import encloseD3 from "./enclose";
 import allPermutationsOf from "./permutations";
 
-const N = 8;
+const N = 8,
+      EPS = 1e-6;
 
 function randomCircle() {
 	return {
@@ -19,23 +21,18 @@ function randomCircles() {
 	return r;
 }
 
-function arrayEquals(a, b) {
-	if (a.length !== b.length) return false;
-	for (var i = 0; i < a.length; i++) {
-		if (a[i] !== b[i]) return false;
-	}
-	return true;
+function circlesEqual(a, b) {
+	return Math.abs(a.x-b.x) <= EPS && Math.abs(a.y-b.y) <= EPS && Math.abs(a.r-b.r) <= EPS;
 }
 
 // while(true) enclose(randomCircles());
 
 while(true) {
 	let circles = randomCircles();
-	let previous_result;
 	allPermutationsOf(circles, circles => {
-		const result = enclose(circles);
+		const result = encloseMSW(circles);
 		if (typeof previous_result !== "undefined") {
-			if (!arrayEquals(previous_result, result)) {
+			if (!circlesEqual(previous_result, result)) {
 				console.warn("Inconsistent results!", previous_result, result);
 			}
 		}
