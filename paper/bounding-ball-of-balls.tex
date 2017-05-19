@@ -9,12 +9,15 @@
 \bibliographystyle{plainnat}
 \frenchspacing
 
+\newtheorem{lemma}{Lemma}[section]
 \newtheorem{theorem}{Theorem}[section]
 
 \newcommand\R{\mathbb{R}}
 \newcommand\alg[1]{\mbox{\textsc{#1}}}
 \newcommand\undef{\mathbf{null}}
 \newcommand\mb{\mathrm{mb}}
+\let\boundary\partial
+\let\radius\rho
 
 \author{Mike Bostock and Robin Houston}
 \title{Computing the smallest enclosing ball of balls}
@@ -58,7 +61,7 @@ Let's write $\mb(S)$ to mean the smallest ball containing all the balls in $S$, 
 
 In this section we exhibit a variant of Welzl's algorithm that is designed to be easy to analyse. Below we'll show how it can be made simpler and more efficient to implement, at the expense of being harder to analyse.
 
-There is an algorithm $\alg{MbTangent}(T)$ that computes $\mb(T)$ provided that all the balls in $T$ are tangent to $\mb(T)$, and returns $\undef$ otherwise. This can be implemented in various ways. One possibility is first to compute the smallest ball to which all the balls in $T$ are internally tangent, if there is one. This is similar to the algorithm $\alg{BallBoundedBy}$ described above. [Explain further.] If there is no such ball, return $\undef$. If there is, check whether it is equal to $\mb(T)$ by checking whether its centre is contained in the convex hull of the centres of the balls in $T$. (\citealp[Lemma~2.2]{Fischer-Gartner}, \citealp[Lemma~3.3]{FischerThesis})
+There is an algorithm $\alg{MbTangent}(T)$ that computes $\mb(T)$ provided that all the balls in $T$ are tangent to $\mb(T)$, and returns $\undef$ otherwise. This can be implemented in various ways. One possibility is first to compute the smallest ball to which all the balls in $T$ are internally tangent, if there is one. This is similar to the algorithm $\alg{BallBoundedBy}$ described above. [Explain further.] If there is no such ball, return $\undef$. If there is, check whether it is equal to $\mb(T)$ by checking whether its centre is contained in the convex hull of the centres of the balls in $T$. (\citealp[Lemma~2.2]{Fischer-Gartner}; \citealp[Lemma~3.3]{FischerThesis})
 
 Here is our version of Welzl's algorithm adapted to computing the bounding ball of balls.
 %\begin{algorithm}\label{alg:welzl-balls}
@@ -83,15 +86,70 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
 \noindent The only change to the actual algorithm is that a $\undef$ return value from a recursive call is handled in the opposite way: we treat $\undef$ as a ball that contains nothing, rather than as a ball that contains everything. More important is the way we have weakened the description of the algorithm: it only computes $\mb(S, T)$ when it is equal to $\mb(S\cup T)$. Of course this makes no difference in the case we principally care about, where the algorithm is initially called with $T=\emptyset$.
 
 \section{Proof of correctness}
+\begin{lemma}[Convex combinations of balls]\label{lemma:cc}
+  If $B$ and $C$ are two balls that intersect, there is a continuous family of balls $B_\lambda$ for $\lambda\in[0,1]$ with the following properties:
+  \def\theenumi{\normalfont\roman{enumi})}\let\labelenumi\theenumi
+  \begin{enumerate}
+    \item\label{item:cc:0} $B_0=B$,
+    \item\label{item:cc:1} $B_1=C$,
+    \item\label{item:cc:intersection} $B_\lambda\subseteq B\cup C$ for all $\lambda\in[0,1]$,
+    % This is true, but we don’t (yet) need it:
+    %\item\label{item:cc:boundary} $\boundary B_\lambda\subseteq \boundary B\cup \boundary C$ for all $\lambda\in[0,1]$, where $\boundary$ denotes the boundary sphere of a ball,
+    \item\label{item:cc:radius} if $B\neq C$ then $\radius B_\lambda < \max(\radius B, \radius C)$ for all $\lambda\in(0,1)$, where $\radius$ denotes the radius of a ball.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}\citep{Welzl}
+  \newcommand\x{\mathbf{x}}\newcommand\p{\mathbf{p}}
+  Suppose the ball $B$ has centre $\x$ and radius $r$. Define the function $f_B: \R^d\to\R$ by $f_B(\p) = \frac{\|\p-\x\|^2}{r^2}$, so that $B$ consists of the points $\p$ with $f_B(\p)\leq1$. Define $f_C$ similarly.
+
+  Now for $\lambda\in[0,1]$ define $f_\lambda(\p) = (1-\lambda)f_B(\p) + \lambda f_C(\p)$, and let $B_\lambda$ be the set of points $\p$ for which $f_\lambda(\p)\leq1$. It is a somewhat surprising fact that $B_\lambda$ is always a ball: this may be verified algebraically.
+
+  As an illustration of the principle let us do so in two dimensions. Suppose $B$ has centre $(x_B,y_B)$ and radius $r_B$, and $C$ has centre $(x_C,y_C)$ and radius $r_C$. Then $f_\lambda(x,y)$ is
+
+  \[ \frac{1-\lambda}{r_B^2}[(x-x_B)^2 + (y-y_B)^2] + \frac{\lambda}{r_C^2}[(x-x_C)^2 + (y-y_C)^2] \]
+  %
+  Multiplying out and completing the square in $x$ and $y$ gives:
+  \[ \Bigl(\frac{1-\lambda}{r_B^2} + \frac{\lambda}{r_C^2}\Bigr)\bigl((x-\alpha)^2 + (y-\beta)^2\bigr) + \gamma \]
+  where $\alpha$, $\beta$, $\gamma$ are expressions in $\lambda$, $x_B$,$y_B$,$r_B$, $x_C$,$y_C$,$r_C$.\footnote{
+    $\alpha = \frac{(1-\lambda) r_C^2 x_B + \lambda r_B^2 x_C}{(1-\lambda) r_C^2 + \lambda r_B^2}$,
+    $\beta = \frac{(1-\lambda) r_C^2 y_B + \lambda r_B^2 y_C}{(1-\lambda) r_C^2 + \lambda r_B^2}$,
+    $\gamma = \frac{\lambda(1-\lambda)((x_B-x_C)^2+(y_B-y_C)^2)}{(1-\lambda) r_C^2 + \lambda r_B^2}$.
+  }
+  %
+  So $B_\lambda$ is a ball with centre $(\alpha,\beta)$ -- which lies on the line connecting the centre of $A$ to the centre of $B$ -- and squared radius \[ r^2=\frac{1-\gamma}{\frac{1-\lambda}{r_B^2} + \frac{\lambda}{r_C^2}} \]
+  %
+  Substituting the expression for $\gamma$ and simplifying, the squared radius is
+  \[
+    \frac{r_B^2r_C^2}{((1-\lambda) r_C^2 + \lambda r_B^2)^2}\Bigl( \lambda r_B^2 + (1-\lambda)(r_C^2-\lambda d^2 \Bigr)
+  \]
+  where $d^2=(x_B-x_C)^2+(y_B-y_C)^2$ is the square of the distance from the centre of $B$ to the centre of $C$.
+
+  Since $d^2$ is non-negative,
+  \begin{equation}\label{ineq:r}
+    r^2 \leq \frac{r_B^2r_C^2}{(1-\lambda) r_C^2 + \lambda r_B^2}
+  \end{equation}
+  The denominator is between $r_B^2$ and $r_C^2$, hence $r^2$ is between $r_B^2$ and $r_C^2$, which implies $r$ is between $r_B$ and $r_C$. So we can prove \label{item:cc:radius}: if $B\neq C$ then either their centres or their radii are different. If their centres are different then $d^2>0$ and the inequality \label{ineq:1} is strict assuming $\lambda\in(0,1)$; if their radii are different then for $\lambda\in(0,1)$ the value of the expression on the rhs of \ref{ineq:r} is strictly less than $\max{r_B,r_C}$.
+
+  Furthermore \ref{item:cc:0} and \ref{item:cc:1} are immediate by definition. For \ref{item:cc:intersection} observe that $f_\lambda(\p)$ lies between $f_B(\p)$ and $f_C(\p)$, so if they are both $\leq1$ then so must $f_\lambda(\p)$ be.
+\end{proof}
+\begin{lemma}\label{lemma:tangent}
+  Let $S$ be a finite set of balls and $B$ a ball. If $B\not\subseteq\mb(S)$ then $B$ is tangent to $\mb(S\cup\{B\})$.
+\end{lemma}
+\begin{proof}
+  Let $M = \mb(S\cup\{B\})$, and suppose on the contrary that $B$ were not tangent to $M$.
+  By Lemma~\ref{lemma:cc} there is a continuous family of balls $L_\lambda$ for $\lambda\in[0,1]$
+  with $L_0=\mb(S)$ and $L_1=M$. Since $B$ is not tangent to $M$, there must be some $\lambda<1$ for which $B\subseteq L_\lambda$. By part \ref{item:cc:intersection} of Lemma~\ref{lemma:cc} we know that all the balls in $S$ are contained in $L_\lambda$, and by part \ref{item:cc:radius} we know that the radius of $L_\lambda$ is less than the radius of $L$ (since $\radius L\geq \radius\mb(S)$ by the minimality of $\mb(S)$). This contradicts the minimality of $L$.
+\end{proof}
+
 \begin{theorem}
-  For any finite sets $S$, $T$ of $d$-balls, $\alg{WelzlB}(S,T)$ returns $\mb(S,T)$ if $\mb(S,T)=\mb(S\cup T)$, and $\undef$ otherwise.
+  For any finite sets $S$, $T$ of balls, $\alg{WelzlB}(S,T)$ returns $\mb(S,T)$ if $\mb(S,T)=\mb(S\cup T)$, and $\undef$ otherwise.
 \end{theorem}
 \begin{proof}
   We proceed by induction on $|S|$. For the base case: if $S=\emptyset$ then the claim is true by the correctness of $\alg{MbTangent}$. So assume we have chosen $B\in S$, and that the claim holds for $\alg{WelzlB}(S-\{B\},T)$ and $\alg{WelzlB}(S-\{B\},T\cup\{B\})$.
 
   Let $M$ equal $\mb((S-\{B\})\cup T)$. Suppose first that $B\subseteq M$. In this case $M=\mb(S\cup T)$. We know $\alg{WelzlB}(S-\{B\},T)$ returns $M$ if all the balls in $T$ are tangent to $M$ and $\undef$ otherwise, so in either case it is correct to return $\alg{WelzlB}(S-\{B\},T)$.
 
-  Next suppose that $B\not\subseteq M$. Let $N$ equal $\mb(S\cup T)$. We know $B$ is tangent to $N$. [This should probably be an explicit lemma. It follows from the standard argument using convex combinations of balls.] If all the balls in $T$ are also tangent to $N$ then $\alg{WelzlB}(S-\{B\}, T\cup\{B\})$ returns $N$, correctly. If not then it returns $\undef$, also correctly.
+  Next suppose that $B\not\subseteq M$. Let $N$ equal $\mb(S\cup T)$. We know by Lemma~\ref{lemma:tangent} $B$ is tangent to $N$. If all the balls in $T$ are also tangent to $N$ then $\alg{WelzlB}(S-\{B\}, T\cup\{B\})$ returns $N$, correctly. If not then it returns $\undef$, also correctly.
 \end{proof}
 
 \section{Simplifying the base case}
