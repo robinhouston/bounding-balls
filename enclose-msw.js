@@ -29,7 +29,7 @@ function pp_list(L) {
 }
 
 function findBasis(L, B, level=0) {
-  console.log("  ".repeat(level) + "encloseN", pp_list(L), "[" + pp_array(B) + "]");
+  // console.log("  ".repeat(level) + "encloseN", pp_list(L), "[" + pp_array(B) + "]");
   var circle = encloseBasis(B),
       l0 = null,
       l1 = L.head,
@@ -59,7 +59,6 @@ function findBasis(L, B, level=0) {
   }
 
   L.tail = l0;
-  console.log("  ".repeat(level) + "returning", JSON.stringify(circle) || "undefined");
   return B;
 }
 
