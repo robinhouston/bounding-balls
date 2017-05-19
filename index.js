@@ -1,4 +1,5 @@
 import enclose from "./enclose-msw";
+import allPermutationsOf from "./permutations";
 
 const B1 = {name: "B1", x: 400, y: 200, r: 100},
       B2 = {name: "B2", x: 400, y: 420, r: 9},
@@ -15,25 +16,9 @@ const a = {name: "a", x: 365, y: 90, r: 5},
 // const input_circles = [B1,B2,B3,B4,B5];
 const input_circles = [ d, D, c, b, a ];
 
-function allPermutationsOf(array, callback, level=0) {
-    array = array.slice(0);
-    const calling = (level === array.length-1);
-    let index = level;
-    do {
-        if (calling) callback(array);
-        else allPermutationsOf(array, callback, level+1);
+allPermutationsOf(input_circles, circles => {
+	console.log("< " + circles.map(c => c.name).join(",") + " >");
+	console.log(enclose(circles))
+});
 
-        if (index > 0) {
-            const tmp = array[index];
-            array[index] = array[index-1];
-            array[index-1] = tmp;
-        }
-    } while (index-- > 0);
-}
-
-// allPermutationsOf(input_circles, circles => {
-// 	console.log("< " + circles.map(c => c.name).join(",") + " >");
-// 	console.log(enclose(circles))
-// });
-
-console.log(enclose(input_circles));
+// console.log(enclose(input_circles));
