@@ -5,6 +5,7 @@ export default function(circles) {
 }
 
 function encloses(a, b) {
+  if (a.r < b.r) return false;
   var dx = b.x - a.x,
       dy = b.y - a.y,
       dr = a.r - b.r;
