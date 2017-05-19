@@ -73,7 +73,7 @@ function encloseBasis(B) {
 
 function extendBasis(B, p) {
   var i, j;
-  if (B.length == 0) return [p];
+  if (enclosesAll(p, B)) return [p];
   for (i = 0; i < B.length; i++) {
     if (enclosesAll(encloseBasis([B[i], p]), B)) return [B[i], p];
   }
