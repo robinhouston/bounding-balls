@@ -147,7 +147,7 @@ Here is our version of Welzl's algorithm adapted to computing the bounding ball 
 \begin{proof}
   We proceed by induction on $|S|$. For the base case: if $S=\emptyset$ then the claim is true by the correctness of $\alg{MbTangent}$. So assume we have chosen $B\in S$, and that the claim holds for $\alg{WelzlB}(S-\{B\},T)$ and $\alg{WelzlB}(S-\{B\},T\cup\{B\})$.
 
-  Let $M$ equal $\mb((S-\{B\})\cup T)$. Suppose first that $B\subseteq M$. In this case $M=\mb(S\cup T)$. We know $\alg{WelzlB}(S-\{B\},T)$ returns $M$ if all the balls in $T$ are tangent to $M$ and $\undef$ otherwise, so in either case it is correct to return $\alg{WelzlB}(S-\{B\},T)$.
+  Let $M = \mb((S-\{B\})\cup T)$. Suppose first that $B\subseteq M$. In this case $M=\mb(S\cup T)$. We know $\alg{WelzlB}(S-\{B\},T)$ returns $M$ if all the balls in $T$ are tangent to $M$ and $\undef$ otherwise, so in either case it is correct to return $\alg{WelzlB}(S-\{B\},T)$.
 
   Next suppose that $B\not\subseteq M$. Let $N$ equal $\mb(S\cup T)$. We know by Lemma~\ref{lemma:tangent} that $B$ is tangent to $N$. If all the balls in $T$ are also tangent to $N$ then $\alg{WelzlB}(S-\{B\}, T\cup\{B\})$ returns $N$, correctly. If not then it returns $\undef$, also correctly.
 \end{proof}
