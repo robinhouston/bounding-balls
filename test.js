@@ -28,14 +28,21 @@ function circlesEqual(a, b) {
 // while(true) enclose(randomCircles());
 
 while(true) {
-	let circles = randomCircles();
+	const circles = randomCircles();
+	const d3_answer = encloseD3(circles),
+	      msw_answer = encloseMSW(circles);
+
+	if (!circlesEqual(d3_answer, msw_answer)) {
+		console.error("MSW result inconsistent with D3", msw_answer, d3_answer);
+	}
+
 	let previous_result;
 	allPermutationsOf(circles, circles => {
 		const result = encloseMSW(circles);
 		if (typeof previous_result !== "undefined") {
 			if (!circlesEqual(previous_result, result)) {
-				console.warn("Inconsistent results!", previous_result, result);
-				console.warn("D3 thinks the answer is", encloseD3(circles));
+				console.error("Inconsistent results!", previous_result, result);
+				console.error("D3 thinks the answer is", d3_answer);
 			}
 		}
 		previous_result = result;
