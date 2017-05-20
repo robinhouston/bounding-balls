@@ -1,5 +1,10 @@
 import encloseWelzl from "./enclose";
+import encloseWelzlNoMTF from "./enclose-no-mtf";
 import encloseMSW from "./enclose-msw";
+import encloseMSWNoMTF from "./enclose-msw-no-mtf";
+import encloseMSWArray from "./enclose-msw-array";
+
+const N = 50;
 
 const Benchmark = require("benchmark");
 
@@ -9,7 +14,7 @@ function randomCircle() {
 	return {
 		x: Math.random() * 1000,
 		y: Math.random() * 1000,
-		r: Math.random() * 200,
+		r: Math.random() * 20,
 	};
 }
 
@@ -21,25 +26,20 @@ function randomCircles(n) {
 	return r;
 }
 
-function randomCircleSets(m, n) {
-	const r = [];
-	for (let i = 0; i < m; i++) {
-		r.push(randomCircles(n));
-	}
-	return r;
-}
-
-const circle_sets = randomCircleSets(1000, 50);
-
 suite.add("Welzl", function() {
-	for (var i = 0; i < circle_sets.length; i++) {
-		encloseWelzl(circle_sets[i]);
-	}
+	encloseWelzl(randomCircles(N));
 })
 .add("MSW", function() {
-	for (var i = 0; i < circle_sets.length; i++) {
-		encloseMSW(circle_sets[i]);
-	}
+	encloseMSW(randomCircles(N));
+})
+suite.add("Welzl (no move-to-front)", function() {
+	encloseWelzlNoMTF(randomCircles(N));
+})
+.add("MSW (no move-to-front)", function() {
+	encloseMSWNoMTF(randomCircles(N));
+})
+.add("MSW (array)", function() {
+	encloseMSWArray(randomCircles(N));
 })
 .on("cycle", function(event) {
 	console.log(String(event.target));

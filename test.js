@@ -1,4 +1,4 @@
-import encloseMSW from "./enclose-msw";
+import encloseMSW from "./enclose-msw-array";
 import encloseD3 from "./enclose";
 import allPermutationsOf from "./permutations";
 
