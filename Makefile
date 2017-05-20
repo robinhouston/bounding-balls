@@ -7,7 +7,10 @@ test: test-script.js
 bench: bench-script.js
 	node "$<"
 
-.PHONY: run test bench
+numerics: numerics-script.js
+	node "$<"
+
+.PHONY: run test bench numerics
 
 LIBS = enclose.js enclose-no-mtf.js \
 	enclose-msw.js enclose-msw-no-mtf.js enclose-msw-array.js \
