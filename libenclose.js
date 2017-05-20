@@ -57,6 +57,13 @@ export function encloses(a, b) {
   return dr * dr + 1e-5 > dx * dx + dy * dy;
 }
 
+export function enclosesAll(a, B) {
+  for (var i = 0; i < B.length; i++) {
+    if (!encloses(a, B[i])) return false;
+  }
+  return true;
+}
+
 export function isBasis(a, b, c) {
   return !encloses(enclose2(a, b), c)
     && !encloses(enclose2(a, c), b)

@@ -1,4 +1,4 @@
-import { enclose1, enclose2, enclose3, encloses, isBasis, pp_array, pp_circle } from "./libenclose";
+import { enclose1, enclose2, enclose3, encloses, enclosesAll, isBasis, pp_array, pp_circle } from "./libenclose";
 import makeList from "./list";
 
 export default function(circles) {
@@ -65,11 +65,4 @@ function extendBasis(B, p) {
   // If we get here then something is very wrong
   console.error(pp_array(B), pp_circle(p));
   throw new Error("extendBasis: we should never get here");
-}
-
-function enclosesAll(a, B) {
-  for (var i = 0; i < B.length; i++) {
-    if (!encloses(a, B[i])) return false;
-  }
-  return true;
 }
