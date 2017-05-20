@@ -15,9 +15,14 @@ function encloseN(L, B, level=0) {
       p1;
 
   switch (B.length) {
+    case 0: break;
     case 1: circle = enclose1(B[0]); break;
     case 2: circle = enclose2(B[0], B[1]); break;
-    case 3: circle = enclose3(B[0], B[1], B[2]); break;
+    case 3:
+      if (!isBasis(B[0], B[1], B[2])) return;
+      circle = enclose3(B[0], B[1], B[2]);
+      break;
+    default: return;
   }
 
   while (l1) {
