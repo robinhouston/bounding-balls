@@ -1,8 +1,8 @@
 import { enclose1, enclose2, enclose3, encloses, pp_array, pp_circle } from "./libenclose";
-import shuffle from "./shuffle";
+import makeList from "./list";
 
 export default function(circles) {
-  return encloseBasis(findBasis(shuffle(circles), []));
+  return encloseBasis(findBasis(makeList(circles), []));
 }
 
 function findBasis(L, B, level=0) {

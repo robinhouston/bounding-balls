@@ -1,8 +1,8 @@
-import shuffle from "./shuffle";
+import makeList from "./list";
 import { enclose1, enclose2, enclose3, encloses } from "./libenclose";
 
 export default function(circles) {
-  return encloseN(shuffle(circles), []);
+  return encloseN(makeList(circles), []);
 }
 
 // Returns the smallest circle that contains circles L and intersects circles B.
