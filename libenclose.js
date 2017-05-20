@@ -54,7 +54,7 @@ export function encloses(a, b) {
   var dx = b.x - a.x,
       dy = b.y - a.y,
       dr = a.r - b.r;
-  return dr * dr + 1e-4 > dx * dx + dy * dy;
+  return dr * dr * (1 + 1e-6) > dx * dx + dy * dy;
 }
 
 export function enclosesAll(a, B) {
