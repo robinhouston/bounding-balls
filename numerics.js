@@ -8,18 +8,10 @@ function randomCircle() {
 	};
 }
 
-function perturb(c) {
-	return {
-		x: c.x + Math.random() * 10 - 5,
-		y: c.y + Math.random() * 10 - 5,
-		r: c.r + Math.random() * 20 - 10,
-	};
-}
-
 let n = 0;
 while(true) {
 	const a = randomCircle(),
-	      b = perturb(a),
+	      b = randomCircle(),
 	      c = randomCircle();
 
 	const B = enclose3(a, b, c);
