@@ -1,5 +1,5 @@
 import makeList from "./list";
-import { enclose1, enclose2, enclose3, encloses } from "./libenclose";
+import { enclose1, enclose2, enclose3, encloses, isBasis, pp_list, pp_array } from "./libenclose";
 
 export default function(circles) {
   return encloseN(makeList(circles), []);

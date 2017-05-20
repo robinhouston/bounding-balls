@@ -57,6 +57,12 @@ export function encloses(a, b) {
   return dr * dr + 1e-5 > dx * dx + dy * dy;
 }
 
+export function isBasis(a, b, c) {
+  return !encloses(enclose2(a, b), c)
+    && !encloses(enclose2(a, c), b)
+    && !encloses(enclose2(b, c), a);
+}
+
 
 export function pp_circle(a) {
   return a.name || JSON.stringify(a);
