@@ -32,7 +32,7 @@ suite.add("Welzl", function() {
 .add("MSW", function() {
 	encloseMSW(randomCircles(N));
 })
-suite.add("Welzl (no move-to-front)", function() {
+.add("Welzl (no move-to-front)", function() {
 	encloseWelzlNoMTF(randomCircles(N));
 })
 .add("MSW (no move-to-front)", function() {
