@@ -1,3 +1,10 @@
+export function shuffle(L) {
+  for (var i = 0; i < L.length; i++) {
+    var j = Math.floor(Math.random() * (i+1));
+    var tmp = L[i]; L[i] = L[j]; L[j] = tmp;
+  }
+}
+
 function distance(x1, y1, x2, y2) {
   var dx = x1 - x2, dy = y1 - y2;
   return Math.sqrt(dx * dx + dy * dy);
