@@ -12,8 +12,8 @@ numerics: numerics-script.js
 
 .PHONY: run test bench numerics
 
-LIBS = enclose.js enclose-no-mtf.js \
-	enclose-msw.js enclose-msw-no-mtf.js enclose-msw-array.js \
+LIBS = enclose.js enclose-no-mtf.js enclose-array.js \
+	enclose-msw.js enclose-msw-no-mtf.js enclose-msw-array.js enclose-msw-incorrect.js \
 	list.js permutations.js libenclose.js
 
 %-script.js: %.js $(LIBS)
