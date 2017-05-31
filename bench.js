@@ -4,6 +4,7 @@ import encloseWelzlArray from "./enclose-array";
 import encloseMSW from "./enclose-msw";
 import encloseMSWNoMTF from "./enclose-msw-no-mtf";
 import encloseMSWArray from "./enclose-msw-array";
+import encloseMSWIterative from "./enclose-msw-iterative";
 import encloseMSWIncorrect from "./enclose-msw-incorrect";
 
 const N = 50;
@@ -29,27 +30,30 @@ function randomCircles(n) {
 }
 
 suite.on("error", function(e) { throw e.target.error; })
-.add("Welzl", function() {
-	encloseWelzl(randomCircles(N));
-})
-.add("MSW", function() {
-	encloseMSW(randomCircles(N));
-})
-.add("Welzl (no move-to-front)", function() {
-	encloseWelzlNoMTF(randomCircles(N));
-})
-.add("MSW (no move-to-front)", function() {
-	encloseMSWNoMTF(randomCircles(N));
-})
-.add("Welzl (array)", function() {
-	encloseWelzlArray(randomCircles(N));
-})
+// .add("Welzl", function() {
+// 	encloseWelzl(randomCircles(N));
+// })
+// .add("MSW", function() {
+// 	encloseMSW(randomCircles(N));
+// })
+// .add("Welzl (no move-to-front)", function() {
+// 	encloseWelzlNoMTF(randomCircles(N));
+// })
+// .add("MSW (no move-to-front)", function() {
+// 	encloseMSWNoMTF(randomCircles(N));
+// })
+// .add("Welzl (array)", function() {
+// 	encloseWelzlArray(randomCircles(N));
+// })
 .add("MSW (array)", function() {
 	encloseMSWArray(randomCircles(N));
 })
-.add("MSW (incorrect)", function() {
-	encloseMSWIncorrect(randomCircles(N));
+.add("MSW (iterative)", function() {
+	encloseMSWIterative(randomCircles(N));
 })
+// .add("MSW (incorrect)", function() {
+// 	encloseMSWIncorrect(randomCircles(N));
+// })
 .on("cycle", function(event) {
 	console.log(String(event.target));
 })

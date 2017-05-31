@@ -10,10 +10,14 @@ bench: bench-script.js
 numerics: numerics-script.js
 	node "$<"
 
-.PHONY: run test bench numerics
+t: t-script.js
+	node "$<"
 
-LIBS = enclose.js enclose-no-mtf.js enclose-array.js \
-	enclose-msw.js enclose-msw-no-mtf.js enclose-msw-array.js enclose-msw-incorrect.js \
+.PHONY: run test bench numerics t
+
+ENCLOSE_SCRIPTS = $(wildcard enclose*.js)
+
+LIBS = $(ENCLOSE_SCRIPTS) \
 	list.js permutations.js libenclose.js
 
 %-script.js: %.js $(LIBS)
