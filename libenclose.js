@@ -1,5 +1,5 @@
-export function shuffle(L) {
-  for (var i = 0; i < L.length; i++) {
+export function shuffle(L, n) {
+  for (var i = 0; i < n; i++) {
     var j = Math.floor(Math.random() * (i+1));
     var tmp = L[i]; L[i] = L[j]; L[j] = tmp;
   }
@@ -65,6 +65,14 @@ export function enclose3(a, b, c) {
       distance(x, y, x3, y3) + r3
     )
   };
+}
+
+export function encloseBasis(B) {
+  switch(B.length) {
+    case 1: return enclose1(B[0]);
+    case 2: return enclose2(B[0], B[1]);
+    case 3: return enclose3(B[0], B[1], B[2]);
+  }
 }
 
 export function encloses(a, b) {
